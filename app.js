@@ -4,9 +4,11 @@ const app = express();
 
 const notFoundMiddleware = require("./middleware/not-found");
 const errorMiddleware = require("./middleware/error-middleware");
+
+const messageRouter = require("./routes/messages");
 //middleware
 app.use(express.json());
-
+app.use("/api/v1", messageRouter);
 app.use([notFoundMiddleware, errorMiddleware]);
 
 const port = process.env.PORT ?? 3000;

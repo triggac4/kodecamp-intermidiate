@@ -7,3 +7,5 @@ function asyncWrapper(func) {
         }
     };
 }
+
+module.exports = asyncWrapper;
