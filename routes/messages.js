@@ -6,12 +6,11 @@ const {
     updateMessages,
     deleteMessages,
 } = require("../controllers/messages");
-
-router.route("/").get(getAllMessages);
+const validator = require("../middleware/validator");
+router.route("/").get(getAllMessages).post(validator, createMessage);
 router
     .route("/:messageId")
     .get(getMessage)
-    .post(createMessage)
     .patch(updateMessages)
     .delete(deleteMessages);
 
