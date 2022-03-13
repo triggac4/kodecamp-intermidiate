@@ -12,7 +12,9 @@ const getAllMessages = asyncWrapper(async function (req, res, next) {
 });
 const createMessage = asyncWrapper(async function (req, res, next) {
     const { name, age, message } = req.body;
-
+    if (!name || !age || !message) {
+        throw new CustomAPIError("a required property missing", 400);
+    }
     const createDate = Date.now();
     const id = createDate.toString();
     const resData = {
@@ -52,12 +54,22 @@ const deleteMessages = asyncWrapper(async function (req, res, next) {
 const updateMessages = asyncWrapper(async function (req, res, next) {
     const { name, age, message } = req.body;
     const { messageId } = req.params;
+    const toUpdate = {};
+    if (name) {
+        toUpdate["name"] = name;
+    }
+    if (age) {
+        toUpdate["age"] = age;
+    }
+    if (message) {
+        toUpdate["message"] = message;
+    }
     const index = messageDb.findIndex((e) => {
         return e.id === messageId;
     });
     if (index >= 0) {
         const update = { name, age, message };
-        messageDb[index] = { ...messageDb[index], name, age, message };
+        messageDb[index] = { ...messageDb[index], ...toUpdate };
         res.json({ status: "success", data: messageDb[index] });
         return;
     }
