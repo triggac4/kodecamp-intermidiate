@@ -68,7 +68,6 @@ const updateMessages = asyncWrapper(async function (req, res, next) {
         return e.id === messageId;
     });
     if (index >= 0) {
-        const update = { name, age, message };
         messageDb[index] = { ...messageDb[index], ...toUpdate };
         res.json({ status: "success", data: messageDb[index] });
         return;
